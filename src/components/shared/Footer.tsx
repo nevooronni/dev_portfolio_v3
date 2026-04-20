@@ -154,14 +154,14 @@ export function Footer() {
           <p>
             © {new Date().getFullYear()} Neville Oronni. All rights reserved.
           </p>
-          <div className="flex gap-8">
+          {/* <div className="flex gap-8">
             <NextLink href="/privacy" className="hover:text-white">
               Privacy Policy
             </NextLink>
             <NextLink href="/terms" className="hover:text-white">
               Terms of Service
             </NextLink>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>
