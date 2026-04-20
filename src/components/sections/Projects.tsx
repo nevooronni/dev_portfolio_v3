@@ -14,27 +14,30 @@ export function Projects() {
         <div className="mb-16 flex flex-col items-end justify-between gap-6 md:flex-row">
           <div className="max-w-2xl">
             <h2 className="font-heading mb-4 text-3xl font-black md:text-5xl">
-              Featured Case Studies
+              Strategic Portfolio
             </h2>
             <p className="text-muted-foreground text-xl">
-              A selection of high-impact engineering projects ranging from
-              fintech backends to AI-integrated mobile ecosystems.
+              A comprehensive selection of engineering projects ranging from
+              fintech ecosystems to AI-integrated mobile solutions.
             </p>
           </div>
           <Button
             variant="outline"
+            asChild
             className="group h-12 rounded-full px-8 font-bold"
           >
-            See All Projects{" "}
-            <ArrowUpRight
-              size={18}
-              className="ml-2 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
-            />
+            <NextLink href="/projects">
+              See All Projects{" "}
+              <ArrowUpRight
+                size={18}
+                className="ml-2 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
+              />
+            </NextLink>
           </Button>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
+          {projects.slice(0, 5).map((project) => (
             <div
               key={project.id}
               className={cn(
@@ -50,9 +53,11 @@ export function Projects() {
                   {project.category}
                 </Badge>
                 <div className="text-muted-foreground flex gap-3 opacity-50 transition-opacity group-hover:opacity-100">
-                  {project.repoLink && (
+                  {project.repoLink && project.repoLink !== "#" && (
                     <NextLink
                       href={project.repoLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="hover:text-accent"
                     >
                       <svg
@@ -71,9 +76,11 @@ export function Projects() {
                       </svg>
                     </NextLink>
                   )}
-                  {project.liveLink && (
+                  {project.liveLink && project.liveLink !== "#" && (
                     <NextLink
                       href={project.liveLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="hover:text-accent"
                     >
                       <ExternalLink size={18} />

@@ -40,8 +40,9 @@ export function MetricsDashboard() {
             Strategic Value & ROI
           </h2>
           <p className="text-muted-foreground max-w-2xl text-xl">
-            Quantifiable impact on revenue, performance, and engineering
-            excellence delivered across major fintech and logistics platforms.
+            Quantifiable impact on innovation, revenue, performance, and
+            engineering excellence delivered across major fintech and logistics
+            platforms.
           </p>
         </div>
 

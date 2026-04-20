@@ -5,7 +5,7 @@ const services = [
   {
     title: "Technical Architecture",
     description:
-      "Designing high-concurrency, distributed systems and microservices for fintech and enterprise scale.",
+      "Designing high-concurrency, distributed systems and microservices for frontend and backend enterprise at scale.",
     icon: <Layers size={32} />,
   },
   {
@@ -15,9 +15,9 @@ const services = [
     icon: <Users size={32} />,
   },
   {
-    title: "Backend Excellence",
+    title: "Full Stack Excellence",
     description:
-      "Building mission-critical APIs and real-time processing engines with NestJS, Fastify, and Kafka.",
+      "Building mission-critical UIs, APIs and real-time processing engines with latest proven technologies.",
     icon: <Cpu size={32} />,
   },
   {
