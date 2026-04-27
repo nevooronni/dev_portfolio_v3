@@ -48,6 +48,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://nevooronni.tech",
   },
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

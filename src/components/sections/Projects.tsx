@@ -14,7 +14,7 @@ export function Projects() {
         <div className="mb-16 flex flex-col items-end justify-between gap-6 md:flex-row">
           <div className="max-w-2xl">
             <h2 className="font-heading mb-4 text-3xl font-black md:text-5xl">
-              Strategic Portfolio
+              Portfolio
             </h2>
             <p className="text-muted-foreground text-xl">
               A comprehensive selection of engineering projects ranging from

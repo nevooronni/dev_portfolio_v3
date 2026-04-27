@@ -10,9 +10,9 @@ export const metrics: Metric[] = [
   {
     id: "revenue-growth",
     label: "YoY Revenue Growth",
-    value: "50%",
+    value: "110%",
     description:
-      "Driving commercial success through scalable fintech architecture at Lemonade Payments.",
+      "Driving commercial success through shipping scalable fintech architecture at Lemonade Payments.",
     chartData: [
       { name: "2023 Q1", value: 400 },
       { name: "2023 Q2", value: 480 },
@@ -25,7 +25,7 @@ export const metrics: Metric[] = [
     label: "API Latency Reduction",
     value: "40%",
     description:
-      "Optimized mission-critical backends for high-concurrency African markets.",
+      "Optimized mission-critical backends for high-concurrency global markets.",
     chartData: [
       { name: "Baseline", value: 100 },
       { name: "Phase 1", value: 85 },
@@ -35,13 +35,13 @@ export const metrics: Metric[] = [
   },
   {
     id: "product-stability",
-    label: "Reduction in Production Bugs",
+    label: "Infrastructure Cost Reduction",
     value: "32%",
-    description: "Implemented rigorous automated testing and CI/CD pipelines.",
+    description: "Implemented new system design and tech stack at Workpay.",
     chartData: [
       { name: "Old Process", value: 100 },
-      { name: "TDD Intro", value: 88 },
-      { name: "CI Integration", value: 75 },
+      { name: "New System Deisgn", value: 88 },
+      { name: "New Architecture", value: 75 },
       { name: "Current", value: 68 },
     ],
   },

@@ -83,10 +83,10 @@ export const experiences: Experience[] = [
     location: "Nairobi, Kenya",
     description: [
       "Led the design and development of the Bluco job marketplace platform from concept to production.",
-      "Built robust backend APIs and integrated multiple third-party payment systems including M-Pesa.",
+      "Built robust REST APIs and integrated multiple third-party payment systems including M-Pesa.",
       "Delivered advanced analytics tooling that improved user insights and enabled high-impact monetization strategies.",
     ],
-    skills: ["Python", "Django", "M-Pesa API", "Analytics", "Backend APIs"],
+    skills: ["Python", "Django", "M-Pesa API", "Analytics", "REST APIs"],
     impactMetric: "End-to-End Scale",
   },
   {

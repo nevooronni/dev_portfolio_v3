@@ -22,7 +22,9 @@ export function Footer() {
             </p>
             <div className="flex gap-5">
               <NextLink
-                href="https://github.com"
+                href="https://github.com/nevooronni"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hover:text-accent transition-colors"
                 aria-label="Visit GitHub Profile"
               >
@@ -43,7 +45,9 @@ export function Footer() {
                 </svg>
               </NextLink>
               <NextLink
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/neville-oronni-5471699b/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hover:text-accent transition-colors"
                 aria-label="Visit LinkedIn Profile"
               >

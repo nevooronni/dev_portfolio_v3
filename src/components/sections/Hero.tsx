@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Terminal, BarChart3, ShieldCheck } from "lucide-react";
+import { ArrowRight, Terminal, ShieldCheck } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export function Hero() {
   return (
@@ -75,7 +76,7 @@ export function Hero() {
                   32%
                 </div>
                 <div className="text-muted-foreground text-sm font-medium tracking-wider uppercase">
-                  Bug Reduction
+                  Cost Reduction
                 </div>
               </div>
               <div>
@@ -94,10 +95,12 @@ export function Hero() {
             <div className="animate-float relative z-10 mx-auto aspect-square w-full max-w-[500px]">
               <div className="border-border/50 absolute inset-0 rounded-[2.5rem] border-4 bg-white/5 backdrop-blur-2xl" />
               <div className="bg-muted relative h-full w-full overflow-hidden rounded-[2rem] shadow-2xl">
-                <img
+                <Image
                   src="/avatar.png"
                   alt="Neville Oronni"
-                  className="h-full w-full origin-[center_25%] scale-[1.4] object-cover grayscale transition-all duration-700 hover:grayscale-0"
+                  fill
+                  className="origin-[center_25%] scale-[1.4] object-cover grayscale transition-all duration-700 hover:grayscale-0"
+                  priority
                 />
               </div>
               {/* Floating Decorative Elements */}
