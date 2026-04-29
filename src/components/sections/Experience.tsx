@@ -1,10 +1,79 @@
 "use client";
 
-import { experiences } from "@/data/experience";
+import React from "react";
+import { supabase } from "@/lib/supabase";
 import { Badge } from "@/components/ui/badge";
-import { Briefcase, Calendar, MapPin, CheckCircle2 } from "lucide-react";
+import { Calendar, CheckCircle2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+
+interface ExperienceItem {
+  id: string;
+  company: string;
+  role: string;
+  period: string;
+  location: string;
+  description: string[];
+  skills: string[];
+  impact_metric?: string;
+}
 
 export function Experience() {
+  const [experienceData, setExperienceData] = React.useState<ExperienceItem[]>(
+    []
+  );
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    async function fetchExperience() {
+      try {
+        const { data, error } = await supabase
+          .from("experiences")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+        setExperienceData(data || []);
+      } catch (err) {
+        console.error("Error fetching experience:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchExperience();
+  }, []);
+
+  if (loading) {
+    return (
+      <section id="experience" className="bg-muted/10 py-24">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="mb-16">
+            <Skeleton className="mb-4 h-12 w-64" />
+            <Skeleton className="h-6 w-full max-w-2xl" />
+          </div>
+          <div className="max-w-4xl space-y-12">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="flex flex-col gap-8 md:flex-row">
+                <div className="space-y-3 md:w-1/2">
+                  <Skeleton className="h-6 w-32" />
+                  <Skeleton className="h-8 w-48" />
+                  <Skeleton className="h-6 w-40" />
+                  <div className="flex gap-2">
+                    <Skeleton className="h-6 w-16 rounded-full" />
+                    <Skeleton className="h-6 w-16 rounded-full" />
+                  </div>
+                </div>
+                <div className="md:w-1/2">
+                  <Skeleton className="h-48 w-full rounded-2xl" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (experienceData.length === 0) return null;
   return (
     <section id="experience" className="bg-muted/10 py-24">
       <div className="container mx-auto px-4 md:px-6">
@@ -19,7 +88,7 @@ export function Experience() {
         </div>
 
         <div className="max-w-4xl space-y-12">
-          {experiences.map((exp, index) => (
+          {experienceData.map((exp, index) => (
             <div
               key={exp.id}
               className="border-border relative border-l-2 pl-8 md:border-none md:pl-0"
@@ -47,7 +116,7 @@ export function Experience() {
                     <div
                       className={`flex flex-wrap gap-2 ${index % 2 === 0 ? "md:justify-start" : "md:justify-end"}`}
                     >
-                      {exp.skills.slice(0, 5).map((skill) => (
+                      {exp.skills?.slice(0, 5).map((skill) => (
                         <Badge
                           key={skill}
                           variant="secondary"
@@ -65,14 +134,14 @@ export function Experience() {
 
                 <div className="md:w-1/2">
                   <div className="bg-card border-border rounded-2xl border p-8 shadow-sm transition-shadow hover:shadow-md">
-                    {exp.impactMetric && (
+                    {exp.impact_metric && (
                       <div className="text-accent mb-4 flex items-center gap-2 text-xs font-black tracking-widest uppercase">
                         <CheckCircle2 size={16} /> Key Impact:{" "}
-                        {exp.impactMetric}
+                        {exp.impact_metric}
                       </div>
                     )}
                     <ul className="space-y-3">
-                      {exp.description.map((item, i) => (
+                      {exp.description?.map((item, i) => (
                         <li
                           key={i}
                           className="text-muted-foreground flex gap-3 text-sm leading-relaxed"

@@ -28,7 +28,7 @@ export function Hero() {
             </h1>
 
             <p className="text-muted-foreground mb-12 max-w-2xl text-xl leading-relaxed md:text-2xl">
-              Engineering Team Leader with 8+ years of expertise in fintech,
+              Engineering Team Leader with 7+ years of expertise in fintech,
               logistics, payroll, agri-tech high-concurrency full-stack
               architectures. I translate complex business goals into
               high-performance technical reality.
@@ -81,7 +81,7 @@ export function Hero() {
               </div>
               <div>
                 <div className="font-heading mb-1 text-3xl font-black md:text-4xl">
-                  8+
+                  7+
                 </div>
                 <div className="text-muted-foreground text-sm font-medium tracking-wider uppercase">
                   Experience

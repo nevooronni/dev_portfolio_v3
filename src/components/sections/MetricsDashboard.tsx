@@ -6,12 +6,10 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   ResponsiveContainer,
   LineChart,
   Line,
-  Cell,
 } from "recharts";
 import {
   Card,

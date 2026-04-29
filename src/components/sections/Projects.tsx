@@ -1,13 +1,89 @@
 "use client";
 
-import { projects } from "@/data/projects";
+import React from "react";
+import { supabase } from "@/lib/supabase";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, ArrowUpRight } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import NextLink from "next/link";
 import { cn } from "../../lib/utils";
+import { ArrowUpRight, ExternalLink } from "lucide-react";
+
+interface ProjectItem {
+  id: string;
+  title: string;
+  category: string;
+  subcategory?: string;
+  description: string;
+  tech_stack: string[];
+  impact?: string;
+  live_link?: string;
+  repo_link?: string;
+  featured?: boolean;
+}
 
 export function Projects() {
+  const [projectList, setProjectList] = React.useState<ProjectItem[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const { data, error } = await supabase
+          .from("projects")
+          .select("*")
+          .order("featured", { ascending: false })
+          .order("created_at", { ascending: false })
+          .limit(6);
+
+        if (error) throw error;
+        setProjectList(data || []);
+      } catch (err) {
+        console.error("Error fetching projects:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProjects();
+  }, []);
+
+  if (loading) {
+    return (
+      <section id="projects" className="py-24">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="mb-16 flex flex-col items-end justify-between gap-6 md:flex-row">
+            <div className="w-full max-w-2xl">
+              <Skeleton className="mb-4 h-12 w-48" />
+              <Skeleton className="h-6 w-full" />
+              <Skeleton className="mt-2 h-6 w-3/4" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div
+                key={i}
+                className="bg-card border-border space-y-6 rounded-2xl border p-8"
+              >
+                <div className="flex justify-between">
+                  <Skeleton className="h-6 w-24 rounded-full" />
+                  <Skeleton className="h-5 w-5" />
+                </div>
+                <Skeleton className="h-8 w-3/4" />
+                <Skeleton className="h-20 w-full" />
+                <div className="flex gap-2">
+                  <Skeleton className="h-6 w-16" />
+                  <Skeleton className="h-6 w-16" />
+                  <Skeleton className="h-6 w-16" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (projectList.length === 0) return null;
   return (
     <section id="projects" className="py-24">
       <div className="container mx-auto px-4 md:px-6">
@@ -37,11 +113,11 @@ export function Projects() {
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {projects.slice(0, 5).map((project) => (
+          {projectList.map((project) => (
             <div
               key={project.id}
               className={cn(
-                "group bg-card border-border hover:border-accent hover:shadow-accent/10 glow-card relative rounded-2xl border p-8 transition-all duration-300 hover:shadow-2xl",
+                "group bg-card border-border hover:border-accent hover:shadow-accent/10 glow-card relative flex flex-col rounded-2xl border p-8 transition-all duration-300 hover:shadow-2xl",
                 project.featured && "md:col-span-2 lg:col-span-1"
               )}
             >
@@ -53,9 +129,9 @@ export function Projects() {
                   {project.category}
                 </Badge>
                 <div className="text-muted-foreground flex gap-3 opacity-50 transition-opacity group-hover:opacity-100">
-                  {project.repoLink && project.repoLink !== "#" && (
+                  {project.repo_link && project.repo_link !== "#" && (
                     <NextLink
-                      href={project.repoLink}
+                      href={project.repo_link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="hover:text-accent"
@@ -76,9 +152,9 @@ export function Projects() {
                       </svg>
                     </NextLink>
                   )}
-                  {project.liveLink && project.liveLink !== "#" && (
+                  {project.live_link && project.live_link !== "#" && (
                     <NextLink
-                      href={project.liveLink}
+                      href={project.live_link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="hover:text-accent"
@@ -109,7 +185,7 @@ export function Projects() {
               )}
 
               <div className="mt-auto flex flex-wrap gap-2">
-                {project.techStack.slice(0, 4).map((tech) => (
+                {project.tech_stack.slice(0, 4).map((tech) => (
                   <span
                     key={tech}
                     className="text-muted-foreground bg-muted/50 rounded px-2 py-1 text-[11px] font-bold"
@@ -117,9 +193,9 @@ export function Projects() {
                     {tech}
                   </span>
                 ))}
-                {project.techStack.length > 4 && (
+                {project.tech_stack.length > 4 && (
                   <span className="text-muted-foreground bg-muted/50 rounded px-2 py-1 text-[11px] font-bold">
-                    +{project.techStack.length - 4}
+                    +{project.tech_stack.length - 4}
                   </span>
                 )}
               </div>

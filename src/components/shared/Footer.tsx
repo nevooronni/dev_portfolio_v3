@@ -1,7 +1,18 @@
+"use client";
+
 import NextLink from "next/link";
 import { Terminal } from "lucide-react";
+import { siteMetadata } from "@/data/metadata";
+import { useEffect, useState } from "react";
 
 export function Footer() {
+  const [resumeUrl, setResumeUrl] = useState(siteMetadata.resumeUrl);
+
+  useEffect(() => {
+    // Add cache buster on client-side mount
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setResumeUrl(`${siteMetadata.resumeUrl}?t=${Date.now()}`);
+  }, []);
   return (
     <footer className="bg-primary text-primary-foreground py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
@@ -143,7 +154,7 @@ export function Footer() {
               <li> Nairobi, Kenya </li>
               <li>
                 <a
-                  href="/nevo-oronni-cv.pdf"
+                  href={resumeUrl}
                   target="_blank"
                   className="text-accent inline-flex items-center gap-2 font-bold hover:underline"
                 >
