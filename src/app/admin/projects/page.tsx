@@ -344,7 +344,7 @@ export default function AdminProjects() {
                     <Switch
                       id="featured"
                       checked={newProject.featured}
-                      onCheckedChange={(checked) =>
+                      onCheckedChange={(checked: boolean) =>
                         setNewProject({ ...newProject, featured: checked })
                       }
                     />
@@ -427,7 +427,9 @@ export default function AdminProjects() {
                       onClick={() =>
                         setEditingProject({
                           ...project,
-                          tech_stack: project.tech_stack.join(", "),
+                          tech_stack: Array.isArray(project.tech_stack)
+                            ? project.tech_stack.join(", ")
+                            : project.tech_stack,
                         })
                       }
                     >
@@ -454,10 +456,11 @@ export default function AdminProjects() {
                               required
                               value={editingProject?.title || ""}
                               onChange={(e) =>
-                                setEditingProject({
-                                  ...editingProject,
-                                  title: e.target.value,
-                                })
+                                setEditingProject((prev) =>
+                                  prev
+                                    ? { ...prev, title: e.target.value }
+                                    : null
+                                )
                               }
                               className="border-muted"
                             />
@@ -470,10 +473,11 @@ export default function AdminProjects() {
                               required
                               value={editingProject?.category || ""}
                               onChange={(e) =>
-                                setEditingProject({
-                                  ...editingProject,
-                                  category: e.target.value,
-                                })
+                                setEditingProject((prev) =>
+                                  prev
+                                    ? { ...prev, category: e.target.value }
+                                    : null
+                                )
                               }
                               className="border-muted"
                             />
@@ -487,10 +491,11 @@ export default function AdminProjects() {
                             <Input
                               value={editingProject?.subcategory || ""}
                               onChange={(e) =>
-                                setEditingProject({
-                                  ...editingProject,
-                                  subcategory: e.target.value,
-                                })
+                                setEditingProject((prev) =>
+                                  prev
+                                    ? { ...prev, subcategory: e.target.value }
+                                    : null
+                                )
                               }
                               className="border-muted"
                             />
@@ -502,10 +507,11 @@ export default function AdminProjects() {
                             <Input
                               value={editingProject?.impact || ""}
                               onChange={(e) =>
-                                setEditingProject({
-                                  ...editingProject,
-                                  impact: e.target.value,
-                                })
+                                setEditingProject((prev) =>
+                                  prev
+                                    ? { ...prev, impact: e.target.value }
+                                    : null
+                                )
                               }
                               className="border-muted"
                             />
@@ -519,10 +525,11 @@ export default function AdminProjects() {
                             required
                             value={editingProject?.tech_stack || ""}
                             onChange={(e) =>
-                              setEditingProject({
-                                ...editingProject,
-                                tech_stack: e.target.value,
-                              })
+                              setEditingProject((prev) =>
+                                prev
+                                  ? { ...prev, tech_stack: e.target.value }
+                                  : null
+                              )
                             }
                             className="border-muted"
                           />
@@ -535,10 +542,11 @@ export default function AdminProjects() {
                             required
                             value={editingProject?.description || ""}
                             onChange={(e) =>
-                              setEditingProject({
-                                ...editingProject,
-                                description: e.target.value,
-                              })
+                              setEditingProject((prev) =>
+                                prev
+                                  ? { ...prev, description: e.target.value }
+                                  : null
+                              )
                             }
                             className="border-muted"
                           />
@@ -551,10 +559,14 @@ export default function AdminProjects() {
                             required
                             value={editingProject?.long_description || ""}
                             onChange={(e) =>
-                              setEditingProject({
-                                ...editingProject,
-                                long_description: e.target.value,
-                              })
+                              setEditingProject((prev) =>
+                                prev
+                                  ? {
+                                      ...prev,
+                                      long_description: e.target.value,
+                                    }
+                                  : null
+                              )
                             }
                             className="border-muted min-h-[150px]"
                           />
@@ -567,10 +579,11 @@ export default function AdminProjects() {
                             <Input
                               value={editingProject?.live_link || ""}
                               onChange={(e) =>
-                                setEditingProject({
-                                  ...editingProject,
-                                  live_link: e.target.value,
-                                })
+                                setEditingProject((prev) =>
+                                  prev
+                                    ? { ...prev, live_link: e.target.value }
+                                    : null
+                                )
                               }
                               className="border-muted"
                             />
@@ -579,11 +592,10 @@ export default function AdminProjects() {
                             <Switch
                               id="edit-featured"
                               checked={editingProject?.featured || false}
-                              onCheckedChange={(checked) =>
-                                setEditingProject({
-                                  ...editingProject,
-                                  featured: checked,
-                                })
+                              onCheckedChange={(checked: boolean) =>
+                                setEditingProject((prev) =>
+                                  prev ? { ...prev, featured: checked } : null
+                                )
                               }
                             />
                             <Label

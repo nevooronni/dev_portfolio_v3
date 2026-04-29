@@ -79,7 +79,6 @@ export default function AdminExperience() {
       console.error("Error fetching experiences:", err);
       toast.error("Failed to fetch experiences");
     } finally {
-      setLoading(false);
     }
   };
   React.useEffect(() => {
@@ -478,15 +477,16 @@ export default function AdminExperience() {
                     {exp.location}
                   </p>
                   <div className="mt-2 flex flex-wrap gap-1">
-                    {exp.skills?.slice(0, 3).map((skill) => (
-                      <span
-                        key={skill}
-                        className="bg-muted rounded px-2 py-0.5 text-[10px] font-medium"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                    {exp.skills?.length > 3 && (
+                    {Array.isArray(exp.skills) &&
+                      exp.skills.slice(0, 3).map((skill) => (
+                        <span
+                          key={skill}
+                          className="bg-muted rounded px-2 py-0.5 text-[10px] font-medium"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    {Array.isArray(exp.skills) && exp.skills.length > 3 && (
                       <span className="text-muted-foreground text-[10px] font-medium">
                         +{exp.skills.length - 3} more
                       </span>
@@ -513,8 +513,12 @@ export default function AdminExperience() {
                       onClick={() =>
                         setEditingRole({
                           ...exp,
-                          description: exp.description.join("\n"),
-                          skills: exp.skills.join(", "),
+                          description: Array.isArray(exp.description)
+                            ? exp.description.join("\n")
+                            : exp.description,
+                          skills: Array.isArray(exp.skills)
+                            ? exp.skills.join(", ")
+                            : exp.skills,
                         })
                       }
                     >
@@ -541,10 +545,11 @@ export default function AdminExperience() {
                               required
                               value={editingRole?.company || ""}
                               onChange={(e) =>
-                                setEditingRole({
-                                  ...editingRole,
-                                  company: e.target.value,
-                                })
+                                setEditingRole((prev) =>
+                                  prev
+                                    ? { ...prev, company: e.target.value }
+                                    : null
+                                )
                               }
                               className="border-muted"
                             />
@@ -557,10 +562,11 @@ export default function AdminExperience() {
                               required
                               value={editingRole?.role || ""}
                               onChange={(e) =>
-                                setEditingRole({
-                                  ...editingRole,
-                                  role: e.target.value,
-                                })
+                                setEditingRole((prev) =>
+                                  prev
+                                    ? { ...prev, role: e.target.value }
+                                    : null
+                                )
                               }
                               className="border-muted"
                             />
@@ -575,10 +581,11 @@ export default function AdminExperience() {
                               required
                               value={editingRole?.period || ""}
                               onChange={(e) =>
-                                setEditingRole({
-                                  ...editingRole,
-                                  period: e.target.value,
-                                })
+                                setEditingRole((prev) =>
+                                  prev
+                                    ? { ...prev, period: e.target.value }
+                                    : null
+                                )
                               }
                               className="border-muted"
                             />
@@ -591,10 +598,11 @@ export default function AdminExperience() {
                               required
                               value={editingRole?.location || ""}
                               onChange={(e) =>
-                                setEditingRole({
-                                  ...editingRole,
-                                  location: e.target.value,
-                                })
+                                setEditingRole((prev) =>
+                                  prev
+                                    ? { ...prev, location: e.target.value }
+                                    : null
+                                )
                               }
                               className="border-muted"
                             />
@@ -607,10 +615,11 @@ export default function AdminExperience() {
                           <Input
                             value={editingRole?.impact_metric || ""}
                             onChange={(e) =>
-                              setEditingRole({
-                                ...editingRole,
-                                impact_metric: e.target.value,
-                              })
+                              setEditingRole((prev) =>
+                                prev
+                                  ? { ...prev, impact_metric: e.target.value }
+                                  : null
+                              )
                             }
                             className="border-muted"
                           />
@@ -622,10 +631,11 @@ export default function AdminExperience() {
                           <Input
                             value={editingRole?.skills || ""}
                             onChange={(e) =>
-                              setEditingRole({
-                                ...editingRole,
-                                skills: e.target.value,
-                              })
+                              setEditingRole((prev) =>
+                                prev
+                                  ? { ...prev, skills: e.target.value }
+                                  : null
+                              )
                             }
                             className="border-muted"
                           />
@@ -638,10 +648,11 @@ export default function AdminExperience() {
                             required
                             value={editingRole?.description || ""}
                             onChange={(e) =>
-                              setEditingRole({
-                                ...editingRole,
-                                description: e.target.value,
-                              })
+                              setEditingRole((prev) =>
+                                prev
+                                  ? { ...prev, description: e.target.value }
+                                  : null
+                              )
                             }
                             className="border-muted min-h-[120px] resize-none"
                           />

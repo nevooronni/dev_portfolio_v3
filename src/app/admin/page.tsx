@@ -105,7 +105,7 @@ export default function AdminDashboard() {
               {stats.loading ? (
                 <Loader2 className="h-6 w-6 animate-spin" />
               ) : (
-                stats.projectsCount
+                stats.projects
               )}
             </div>
             <p className="text-muted-foreground mt-1 text-xs">
@@ -126,7 +126,7 @@ export default function AdminDashboard() {
               {stats.loading ? (
                 <Loader2 className="h-6 w-6 animate-spin" />
               ) : (
-                stats.experienceCount
+                stats.experiences
               )}
             </div>
             <p className="text-muted-foreground mt-1 text-xs">
