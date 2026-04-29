@@ -23,6 +23,7 @@ import { toast } from "sonner";
 interface DashboardStats {
   projects: number;
   experiences: number;
+  metrics: number;
   loading: boolean;
 }
 
@@ -36,6 +37,7 @@ export default function AdminDashboard() {
   const [stats, setStats] = React.useState<DashboardStats>({
     projects: 0,
     experiences: 0,
+    metrics: 0,
     loading: true,
   });
   const [recentProjects, setRecentProjects] = React.useState<ProjectItem[]>([]);
@@ -43,21 +45,28 @@ export default function AdminDashboard() {
   React.useEffect(() => {
     async function fetchStats() {
       try {
-        const [projectsRes, experienceRes, recentRes] = await Promise.all([
-          supabase.from("projects").select("*", { count: "exact", head: true }),
-          supabase
-            .from("experiences")
-            .select("*", { count: "exact", head: true }),
-          supabase
-            .from("projects")
-            .select("id, title, category")
-            .order("created_at", { ascending: false })
-            .limit(3),
-        ]);
+        const [projectsRes, experienceRes, metricsRes, recentRes] =
+          await Promise.all([
+            supabase
+              .from("projects")
+              .select("*", { count: "exact", head: true }),
+            supabase
+              .from("experiences")
+              .select("*", { count: "exact", head: true }),
+            supabase
+              .from("metrics")
+              .select("*", { count: "exact", head: true }),
+            supabase
+              .from("projects")
+              .select("id, title, category")
+              .order("created_at", { ascending: false })
+              .limit(3),
+          ]);
 
         setStats({
           projects: projectsRes.count || 0,
           experiences: experienceRes.count || 0,
+          metrics: metricsRes.count || 0,
           loading: false,
         });
         setRecentProjects(recentRes.data || []);
@@ -138,14 +147,20 @@ export default function AdminDashboard() {
         <Card className="border-none shadow-lg shadow-black/5">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-muted-foreground text-sm font-bold tracking-widest uppercase">
-              Avg. Impact ROI
+              Strategic Metrics
             </CardTitle>
             <BarChart className="text-accent" size={20} />
           </CardHeader>
           <CardContent>
-            <div className="font-heading text-3xl font-black">37%</div>
+            <div className="font-heading text-3xl font-black">
+              {stats.loading ? (
+                <Loader2 className="h-6 w-6 animate-spin" />
+              ) : (
+                stats.metrics
+              )}
+            </div>
             <p className="text-muted-foreground mt-1 text-xs">
-              Across primary metrics
+              Quantifiable impact data
             </p>
           </CardContent>
         </Card>
@@ -190,6 +205,21 @@ export default function AdminDashboard() {
               </div>
               <div className="text-muted-foreground text-xs">
                 Add new roles or achievements.
+              </div>
+            </Link>
+            <Link
+              href="/admin/metrics"
+              className="group bg-muted/50 border-border hover:border-accent hover:bg-accent/5 rounded-xl border p-4 transition-all"
+            >
+              <div className="mb-1 flex items-center justify-between font-bold">
+                Strategic Metrics{" "}
+                <TrendingUp
+                  size={16}
+                  className="text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
+                />
+              </div>
+              <div className="text-muted-foreground text-xs">
+                Manage your impact data.
               </div>
             </Link>
           </CardContent>
