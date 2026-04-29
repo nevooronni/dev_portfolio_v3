@@ -81,7 +81,8 @@ export const projects: Project[] = [
       "Native Modules",
     ],
     impact: "Automated 80% of order processing for urban vendors",
-    liveLink: "https://play.google.com/store/apps/details?id=ke.twiga.shop",
+    liveLink:
+      "https://play.google.com/store/apps/details?id=com.twigafoods.soko",
     featured: true,
   },
 

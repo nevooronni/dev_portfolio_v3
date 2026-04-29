@@ -48,8 +48,7 @@ export default function ProjectsPage() {
             </Button>
 
             <h1 className="font-heading mb-6 text-4xl font-black md:text-6xl">
-              Strategic{" "}
-              <span className="text-accent glow-accent">Portfolio</span>
+              All <span className="text-accent glow-accent">Projects</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl text-xl leading-relaxed">
               The complete architectural history. From early-career experiments
