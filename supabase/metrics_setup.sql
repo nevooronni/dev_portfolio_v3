@@ -8,6 +8,20 @@ CREATE TABLE IF NOT EXISTS metrics (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Enable RLS
+ALTER TABLE metrics ENABLE ROW LEVEL SECURITY;
+
+-- Allow public read access
+CREATE POLICY "Allow public read access" ON metrics
+    FOR SELECT USING (true);
+
+-- Allow authenticated users to perform all actions
+CREATE POLICY "Allow authenticated full access" ON metrics
+    FOR ALL USING (auth.role() = 'authenticated');
+
+-- Clear existing data to prevent duplicates during seeding
+DELETE FROM metrics;
+
 -- Seed with initial data
 INSERT INTO metrics (label, value, description, chart_data) VALUES
 (
