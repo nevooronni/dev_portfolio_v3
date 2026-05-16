@@ -21,17 +21,19 @@ export function Hero() {
               Available for Strategic Roles
             </div>
 
-            <h1 className="font-heading mb-8 text-5xl leading-[1.1] font-black md:text-7xl lg:text-8xl">
-              Architecting <br />
-              Engineering Leadership{" "}
-              <span className="text-accent glow-accent">at Scale.</span>
+            <h1 className="font-heading mb-8 text-3xl leading-[1.1] font-black md:text-3xl lg:text-4xl">
+              Senior Full-Stack Engineer
+              <br />
+              specializing in payment infrastructure, distributed systems, and
+              developer <br />
+              <span className="text-accent glow-accent">platforms.</span>
             </h1>
 
             <p className="text-muted-foreground mb-12 max-w-2xl text-xl leading-relaxed md:text-2xl">
-              Engineering Team Leader with 7+ years of expertise in fintech,
-              logistics, payroll, agri-tech high-concurrency full-stack
-              architectures. I translate complex business goals into
-              high-performance technical reality.
+              7+ years of expertise in fintech, logistics, payroll, agri-tech
+              implementing high-concurrency full-stack architectures. I
+              translate complex business goals into high-performance technical
+              reality.
             </p>
 
             <div className="flex flex-col gap-5 sm:flex-row">
