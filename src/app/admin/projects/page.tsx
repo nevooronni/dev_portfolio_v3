@@ -22,7 +22,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 import { Switch } from "@/components/ui/switch";
@@ -310,17 +310,15 @@ export default function AdminProjects() {
                   <Label className="text-xs font-bold tracking-widest uppercase">
                     Long Case Study Description
                   </Label>
-                  <Textarea
-                    required
+                  <RichTextEditor
                     value={newProject.long_description}
-                    onChange={(e) =>
+                    onChange={(value) =>
                       setNewProject({
                         ...newProject,
-                        long_description: e.target.value,
+                        long_description: value,
                       })
                     }
                     placeholder="Detailed project breakdown..."
-                    className="border-muted min-h-[150px]"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -555,20 +553,18 @@ export default function AdminProjects() {
                           <Label className="text-xs font-bold tracking-widest uppercase">
                             Long Case Study Description
                           </Label>
-                          <Textarea
-                            required
+                          <RichTextEditor
                             value={editingProject?.long_description || ""}
-                            onChange={(e) =>
+                            onChange={(value) =>
                               setEditingProject((prev) =>
                                 prev
                                   ? {
                                       ...prev,
-                                      long_description: e.target.value,
+                                      long_description: value,
                                     }
                                   : null
                               )
                             }
-                            className="border-muted min-h-[150px]"
                           />
                         </div>
                         <div className="grid grid-cols-2 gap-4">

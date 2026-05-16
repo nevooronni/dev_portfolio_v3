@@ -5,6 +5,7 @@ import { MetricsDashboard } from "@/components/sections/MetricsDashboard";
 import { Projects } from "@/components/sections/Projects";
 import { Experience } from "@/components/sections/Experience";
 import { Services } from "@/components/sections/Services";
+import { EngineeringExpertise } from "@/components/sections/EngineeringExpertise";
 import { Contact } from "@/components/sections/Contact";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
       <Projects />
       <Experience />
       <Services />
+      <EngineeringExpertise />
       <Contact />
       <Footer />
     </main>

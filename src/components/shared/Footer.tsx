@@ -27,9 +27,9 @@ export function Footer() {
               </span>
             </NextLink>
             <p className="text-primary-foreground/70 mb-8 max-w-sm leading-relaxed">
-              Engineering Team Leader specializing in architecting
-              mission-critical backends and scaling fintech platforms across
-              global markets. Let&apos;s build something exceptional.
+              Software Engineer specializing in architecting mission-critical
+              backends and scaling fintech platforms across global markets.
+              Let&apos;s build something exceptional.
             </p>
             <div className="flex gap-5">
               <NextLink

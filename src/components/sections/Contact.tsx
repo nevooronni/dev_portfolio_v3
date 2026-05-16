@@ -62,7 +62,7 @@ export function Contact() {
         <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
           <div>
             <h2 className="font-heading mb-6 text-3xl font-black md:text-5xl">
-              Let&apos;s Scale Together.
+              Let&apos;s Work Together.
             </h2>
             <p className="text-muted-foreground mb-12 text-xl leading-relaxed">
               Looking for a seasoned Technical Lead to architect your next
