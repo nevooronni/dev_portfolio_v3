@@ -3,10 +3,12 @@
 import NextLink from "next/link";
 import { Terminal } from "lucide-react";
 import { siteMetadata } from "@/data/metadata";
+import { useAnalytics } from "@/hooks/useAnalytics";
 import { useEffect, useState } from "react";
 
 export function Footer() {
   const [resumeUrl, setResumeUrl] = useState(siteMetadata.resumeUrl);
+  const { trackEvent } = useAnalytics();
 
   useEffect(() => {
     // Add cache buster on client-side mount
@@ -157,6 +159,7 @@ export function Footer() {
                   href={resumeUrl}
                   target="_blank"
                   className="text-accent inline-flex items-center gap-2 font-bold hover:underline"
+                  onClick={() => trackEvent("cv_click", "CV Download (Footer)")}
                 >
                   Download CV (PDF)
                 </a>

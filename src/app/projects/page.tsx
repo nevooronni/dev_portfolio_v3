@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink, ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 interface ProjectItem {
   id: string;
@@ -39,6 +40,7 @@ export default function ProjectsPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [projectList, setProjectList] = useState<ProjectItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const { trackEvent } = useAnalytics();
 
   useEffect(() => {
     async function fetchProjects() {
@@ -159,6 +161,12 @@ export default function ProjectsPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-muted-foreground hover:text-accent"
+                            onClick={() =>
+                              trackEvent(
+                                "outbound_link",
+                                `Live: ${project.title}`
+                              )
+                            }
                           >
                             <ExternalLink size={18} />
                           </Link>

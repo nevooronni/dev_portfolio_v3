@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo, Space_Grotesk, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { AnalyticsTracker } from "@/components/shared/AnalyticsTracker";
 
 const archivo = Archivo({
   variable: "--font-heading",
@@ -65,6 +66,7 @@ export default function RootLayout({
         className={`${archivo.variable} ${spaceGrotesk.variable} ${geistMono.variable} bg-background text-foreground min-h-screen font-sans antialiased`}
       >
         {children}
+        <AnalyticsTracker />
         <Toaster />
       </body>
     </html>

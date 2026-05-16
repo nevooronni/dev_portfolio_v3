@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import NextLink from "next/link";
 import { cn } from "../../lib/utils";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 interface ProjectItem {
   id: string;
@@ -25,6 +26,7 @@ interface ProjectItem {
 export function Projects() {
   const [projectList, setProjectList] = React.useState<ProjectItem[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const { trackEvent } = useAnalytics();
 
   React.useEffect(() => {
     async function fetchProjects() {
@@ -145,6 +147,9 @@ export function Projects() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-accent"
+                        onClick={() =>
+                          trackEvent("outbound_link", `Repo: ${project.title}`)
+                        }
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -168,6 +173,9 @@ export function Projects() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-accent"
+                        onClick={() =>
+                          trackEvent("outbound_link", `Live: ${project.title}`)
+                        }
                       >
                         <ExternalLink size={18} />
                       </NextLink>
