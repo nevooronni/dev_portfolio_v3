@@ -11,7 +11,10 @@ import { ProjectLinks } from "./ProjectLinks";
 export const revalidate = 60;
 
 export async function generateStaticParams() {
-  const { data: projects } = await supabase.from("projects").select("id");
+  const { data: projects } = await supabase
+    .from("projects")
+    .select("id")
+    .neq("is_hidden", true);
   return projects?.map((project) => ({ id: project.id })) || [];
 }
 
@@ -28,7 +31,7 @@ export default async function ProjectDetailsPage({
     .eq("id", id)
     .single();
 
-  if (!project) {
+  if (!project || project.is_hidden === true) {
     notFound();
   }
 
@@ -82,6 +85,16 @@ export default async function ProjectDetailsPage({
             <p className="text-muted-foreground mb-10 text-xl leading-relaxed md:text-2xl">
               {project.description}
             </p>
+
+            {project.image_url && (
+              <div className="border-muted bg-muted/20 mb-12 overflow-hidden rounded-2xl border shadow-2xl">
+                <img
+                  src={project.image_url}
+                  alt={project.title}
+                  className="h-auto w-full object-cover"
+                />
+              </div>
+            )}
 
             <ProjectLinks
               liveLink={project.live_link}

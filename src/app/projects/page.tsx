@@ -24,6 +24,8 @@ interface ProjectItem {
   repo_link?: string;
   featured?: boolean;
   show_case_study?: boolean;
+  image_url?: string | null;
+  is_hidden?: boolean;
 }
 
 const CATEGORIES = [
@@ -49,6 +51,7 @@ export default function ProjectsPage() {
         const { data, error } = await supabase
           .from("projects")
           .select("*")
+          .neq("is_hidden", true)
           .order("created_at", { ascending: false });
 
         if (error) throw error;
@@ -128,13 +131,22 @@ export default function ProjectsPage() {
                   className="group bg-card border-border hover:border-accent hover:shadow-accent/5 animate-in fade-in slide-in-from-bottom-5 relative flex flex-col rounded-2xl border p-8 transition-all duration-500 hover:shadow-2xl"
                   style={{ animationDelay: `${idx * 50}ms` }}
                 >
-                  {/* Visual Placeholder */}
+                  {/* Project Image or Visual Placeholder */}
                   <div className="bg-muted group-hover:bg-muted/50 relative mb-6 aspect-video overflow-hidden rounded-xl transition-colors">
-                    <div className="from-accent/20 to-primary/20 absolute inset-0 flex items-center justify-center bg-gradient-to-br p-6 opacity-20 grayscale transition-all duration-700 group-hover:grayscale-0">
-                      <span className="text-4xl font-black tracking-tighter uppercase opacity-50 select-none">
-                        {project.subcategory || project.category.split(" ")[0]}
-                      </span>
-                    </div>
+                    {project.image_url ? (
+                      <img
+                        src={project.image_url}
+                        alt={project.title}
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="from-accent/20 to-primary/20 absolute inset-0 flex items-center justify-center bg-gradient-to-br p-6 opacity-20 grayscale transition-all duration-700 group-hover:grayscale-0">
+                        <span className="text-4xl font-black tracking-tighter uppercase opacity-50 select-none">
+                          {project.subcategory ||
+                            project.category.split(" ")[0]}
+                        </span>
+                      </div>
+                    )}
                     <div className="absolute inset-0 rounded-xl border border-white/5" />
                   </div>
 
@@ -183,7 +195,7 @@ export default function ProjectsPage() {
                   </h3>
 
                   <p className="text-muted-foreground mb-6 line-clamp-3 text-sm leading-relaxed">
-                    {project.long_description}
+                    {project.description}
                   </p>
 
                   <div className="border-border/50 mt-auto flex flex-wrap gap-2 border-t pt-6">

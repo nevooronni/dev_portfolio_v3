@@ -62,18 +62,18 @@ const matrixData = [
     category: "Architecture",
     icon: <Network size={24} />,
     must: [
-      "API Design",
-      "Event-Driven Systems",
-      "Caching",
-      "Authentication",
-      "Observability",
-    ],
-    preferred: [
       "Load Balancing",
       "API Gateways",
       "Databases",
+      "Caching",
+      "API Design",
+    ],
+    preferred: [
+      "Event-Driven Systems",
+      "Observability",
+      "Authentication",
       "Microservices",
-      "System Design",
+      // "System Design",
     ],
   },
 ];

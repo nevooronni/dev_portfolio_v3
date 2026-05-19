@@ -11,6 +11,9 @@ import {
   Loader2,
   ChevronLeft,
   ChevronRight,
+  Upload,
+  X,
+  Image,
 } from "lucide-react";
 import {
   Dialog,
@@ -41,6 +44,8 @@ interface ProjectItem {
   repo_link?: string;
   featured?: boolean;
   show_case_study?: boolean;
+  image_url?: string | null;
+  is_hidden?: boolean;
   created_at: string;
 }
 
@@ -52,6 +57,8 @@ export default function AdminProjects() {
     React.useState<ProjectItem | null>(null);
   const [currentPage, setCurrentPage] = React.useState(1);
   const projectsPerPage = 5;
+
+  const [isAddModalOpen, setIsAddModalOpen] = React.useState(false);
 
   const [newProject, setNewProject] = React.useState({
     title: "",
@@ -65,7 +72,69 @@ export default function AdminProjects() {
     repo_link: "",
     featured: false,
     show_case_study: false,
+    image_url: "",
+    is_hidden: false,
   });
+
+  const [isUploading, setIsUploading] = React.useState(false);
+  const addFileInputRef = React.useRef<HTMLInputElement>(null);
+  const editFileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleImageUpload = async (file: File, isEdit: boolean) => {
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("File is too large. Max size is 5MB.");
+      return;
+    }
+
+    try {
+      setIsUploading(true);
+      const fileExt = file.name.split(".").pop();
+      const fileName = `project_${Date.now()}_${Math.random()
+        .toString(36)
+        .substring(7)}.${fileExt}`;
+
+      const { data, error } = await supabase.storage
+        .from("project-images")
+        .upload(fileName, file, {
+          cacheControl: "3600",
+          upsert: true,
+        });
+
+      if (error) throw error;
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("project-images").getPublicUrl(fileName);
+
+      if (isEdit) {
+        setEditingProject((prev) =>
+          prev ? { ...prev, image_url: publicUrl } : null
+        );
+      } else {
+        setNewProject((prev) => ({ ...prev, image_url: publicUrl }));
+      }
+
+      toast.success("Image uploaded successfully!");
+    } catch (err) {
+      console.error("Image upload error:", err);
+      toast.error("Failed to upload image");
+    } finally {
+      setIsUploading(false);
+      if (addFileInputRef.current) addFileInputRef.current.value = "";
+      if (editFileInputRef.current) editFileInputRef.current.value = "";
+    }
+  };
+
+  const handleRemoveImage = (isEdit: boolean) => {
+    if (isEdit) {
+      setEditingProject((prev) => (prev ? { ...prev, image_url: null } : null));
+    } else {
+      setNewProject((prev) => ({ ...prev, image_url: "" }));
+    }
+    toast.success("Image removed.");
+  };
 
   const fetchProjects = async () => {
     try {
@@ -119,7 +188,10 @@ export default function AdminProjects() {
         repo_link: "",
         featured: false,
         show_case_study: false,
+        image_url: "",
+        is_hidden: false,
       });
+      setIsAddModalOpen(false);
       fetchProjects();
     } catch (err) {
       console.error(err);
@@ -194,7 +266,7 @@ export default function AdminProjects() {
             Curate and update your case studies and professional history.
           </p>
         </div>
-        <Dialog>
+        <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
           <DialogTrigger asChild>
             <Button className="shadow-accent/20 gap-2 rounded-full font-bold shadow-lg">
               <Plus size={18} /> New Project
@@ -311,6 +383,69 @@ export default function AdminProjects() {
                 </div>
                 <div className="grid gap-2">
                   <Label className="text-xs font-bold tracking-widest uppercase">
+                    Project Image (Optional)
+                  </Label>
+                  <div className="flex flex-col gap-4">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      ref={addFileInputRef}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleImageUpload(file, false);
+                      }}
+                    />
+
+                    {newProject.image_url ? (
+                      <div className="group border-muted bg-muted relative aspect-video max-h-[200px] overflow-hidden rounded-xl border">
+                        <img
+                          src={newProject.image_url}
+                          alt="Project preview"
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="sm"
+                            className="gap-1 rounded-full font-bold"
+                            onClick={() => handleRemoveImage(false)}
+                          >
+                            <X size={14} /> Remove Image
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        onClick={() => addFileInputRef.current?.click()}
+                        className="border-muted bg-muted/30 hover:bg-muted/50 hover:border-accent flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-6 transition-all duration-300"
+                      >
+                        {isUploading ? (
+                          <Loader2
+                            className="text-accent mb-2 animate-spin"
+                            size={24}
+                          />
+                        ) : (
+                          <Upload
+                            className="text-muted-foreground mb-2"
+                            size={24}
+                          />
+                        )}
+                        <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
+                          {isUploading
+                            ? "Uploading file..."
+                            : "Click to upload image"}
+                        </span>
+                        <span className="text-muted-foreground mt-1 text-[10px]">
+                          PNG, JPG, WEBP up to 5MB
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <Label className="text-xs font-bold tracking-widest uppercase">
                     Long Case Study Description
                   </Label>
                   <RichTextEditor
@@ -341,7 +476,7 @@ export default function AdminProjects() {
                       className="border-muted"
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-3 gap-4">
                     <div className="flex items-center gap-2 pt-8">
                       <Switch
                         id="featured"
@@ -354,7 +489,7 @@ export default function AdminProjects() {
                         htmlFor="featured"
                         className="cursor-pointer text-xs font-bold tracking-widest uppercase"
                       >
-                        Featured on Home
+                        Featured
                       </Label>
                     </div>
                     <div className="flex items-center gap-2 pt-8">
@@ -372,7 +507,25 @@ export default function AdminProjects() {
                         htmlFor="show_case_study"
                         className="cursor-pointer text-xs font-bold tracking-widest uppercase"
                       >
-                        Show Case Study
+                        Case Study
+                      </Label>
+                    </div>
+                    <div className="flex items-center gap-2 pt-8">
+                      <Switch
+                        id="is_hidden"
+                        checked={newProject.is_hidden}
+                        onCheckedChange={(checked: boolean) =>
+                          setNewProject({
+                            ...newProject,
+                            is_hidden: checked,
+                          })
+                        }
+                      />
+                      <Label
+                        htmlFor="is_hidden"
+                        className="text-destructive cursor-pointer text-xs font-bold tracking-widest uppercase"
+                      >
+                        Hide
                       </Label>
                     </div>
                   </div>
@@ -440,6 +593,16 @@ export default function AdminProjects() {
                     >
                       • Case Study:{" "}
                       {project.show_case_study === true ? "Visible" : "Hidden"}
+                    </span>
+                    <span
+                      className={`text-[10px] font-bold tracking-wider uppercase ${
+                        project.is_hidden === true
+                          ? "text-destructive font-black"
+                          : "text-emerald-500"
+                      }`}
+                    >
+                      • Status:{" "}
+                      {project.is_hidden === true ? "Hidden" : "Public"}
                     </span>
                   </div>
                 </div>
@@ -584,6 +747,71 @@ export default function AdminProjects() {
                         </div>
                         <div className="grid gap-2">
                           <Label className="text-xs font-bold tracking-widest uppercase">
+                            Project Image (Optional)
+                          </Label>
+                          <div className="flex flex-col gap-4">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              ref={editFileInputRef}
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) handleImageUpload(file, true);
+                              }}
+                            />
+
+                            {editingProject?.image_url ? (
+                              <div className="group border-muted bg-muted relative aspect-video max-h-[200px] overflow-hidden rounded-xl border">
+                                <img
+                                  src={editingProject.image_url}
+                                  alt="Project preview"
+                                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                                  <Button
+                                    type="button"
+                                    variant="destructive"
+                                    size="sm"
+                                    className="gap-1 rounded-full font-bold"
+                                    onClick={() => handleRemoveImage(true)}
+                                  >
+                                    <X size={14} /> Remove Image
+                                  </Button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div
+                                onClick={() =>
+                                  editFileInputRef.current?.click()
+                                }
+                                className="border-muted bg-muted/30 hover:bg-muted/50 hover:border-accent flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-6 transition-all duration-300"
+                              >
+                                {isUploading ? (
+                                  <Loader2
+                                    className="text-accent mb-2 animate-spin"
+                                    size={24}
+                                  />
+                                ) : (
+                                  <Upload
+                                    className="text-muted-foreground mb-2"
+                                    size={24}
+                                  />
+                                )}
+                                <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
+                                  {isUploading
+                                    ? "Uploading file..."
+                                    : "Click to upload image"}
+                                </span>
+                                <span className="text-muted-foreground mt-1 text-[10px]">
+                                  PNG, JPG, WEBP up to 5MB
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <div className="grid gap-2">
+                          <Label className="text-xs font-bold tracking-widest uppercase">
                             Long Case Study Description
                           </Label>
                           <RichTextEditor
@@ -617,7 +845,7 @@ export default function AdminProjects() {
                               className="border-muted"
                             />
                           </div>
-                          <div className="grid grid-cols-2 gap-4">
+                          <div className="grid grid-cols-3 gap-4">
                             <div className="flex items-center gap-2 pt-8">
                               <Switch
                                 id="edit-featured"
@@ -632,7 +860,7 @@ export default function AdminProjects() {
                                 htmlFor="edit-featured"
                                 className="cursor-pointer text-xs font-bold tracking-widest uppercase"
                               >
-                                Featured on Home
+                                Featured
                               </Label>
                             </div>
                             <div className="flex items-center gap-2 pt-8">
@@ -653,7 +881,26 @@ export default function AdminProjects() {
                                 htmlFor="edit-show-case-study"
                                 className="cursor-pointer text-xs font-bold tracking-widest uppercase"
                               >
-                                Show Case Study
+                                Case Study
+                              </Label>
+                            </div>
+                            <div className="flex items-center gap-2 pt-8">
+                              <Switch
+                                id="edit-is-hidden"
+                                checked={editingProject?.is_hidden || false}
+                                onCheckedChange={(checked: boolean) =>
+                                  setEditingProject((prev) =>
+                                    prev
+                                      ? { ...prev, is_hidden: checked }
+                                      : null
+                                  )
+                                }
+                              />
+                              <Label
+                                htmlFor="edit-is-hidden"
+                                className="text-destructive cursor-pointer text-xs font-bold tracking-widest uppercase"
+                              >
+                                Hide
                               </Label>
                             </div>
                           </div>
