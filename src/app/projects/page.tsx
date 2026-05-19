@@ -23,6 +23,7 @@ interface ProjectItem {
   live_link?: string;
   repo_link?: string;
   featured?: boolean;
+  show_case_study?: boolean;
 }
 
 const CATEGORIES = [
@@ -145,15 +146,17 @@ export default function ProjectsPage() {
                       {project.category}
                     </Badge>
                     <div className="flex items-center gap-4">
-                      <Button
-                        asChild
-                        size="sm"
-                        className="bg-accent hover:bg-accent/90 h-8 rounded-full px-4 text-[10px] font-bold tracking-widest text-white uppercase"
-                      >
-                        <Link href={`/projects/${project.id}`}>
-                          View Case Study
-                        </Link>
-                      </Button>
+                      {project.show_case_study === true && (
+                        <Button
+                          asChild
+                          size="sm"
+                          className="bg-accent hover:bg-accent/90 h-8 rounded-full px-4 text-[10px] font-bold tracking-widest text-white uppercase"
+                        >
+                          <Link href={`/projects/${project.id}`}>
+                            View Case Study
+                          </Link>
+                        </Button>
+                      )}
                       <div className="flex items-center gap-3 opacity-0 transition-opacity group-hover:opacity-100">
                         {project.live_link && project.live_link !== "#" && (
                           <Link

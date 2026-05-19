@@ -45,7 +45,6 @@ export function RichTextEditor({
     "blockquote",
     "code-block",
     "list",
-    "bullet",
     "script",
     "indent",
     "link",

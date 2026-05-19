@@ -43,7 +43,7 @@ export function Navbar() {
                 Neville Oronni
               </span>
               <span className="text-muted-foreground mt-1 text-xs font-medium tracking-widest uppercase">
-                Engineering Leader
+                Software Engineer
               </span>
             </div>
           </Link>

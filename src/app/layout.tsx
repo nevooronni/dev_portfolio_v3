@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Neville Oronni | Engineering Team Leader & Staff Engineer",
+  title: "Neville Oronni | Senior Software Engineer",
   description:
     "Senior Technical Leader specializing in mission-critical backends, scaling fintech platforms, and architecting high-performance systems.",
   openGraph: {

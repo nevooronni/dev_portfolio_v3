@@ -18,22 +18,18 @@ export function Hero() {
                 <span className="bg-accent absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
                 <span className="bg-accent relative inline-flex h-2 w-2 rounded-full"></span>
               </span>
-              Available for Strategic Roles
+              Available for high impact Roles
             </div>
 
             <h1 className="font-heading mb-8 text-3xl leading-[1.1] font-black md:text-3xl lg:text-4xl">
-              Senior Full-Stack Engineer
-              <br />
-              specializing in payment infrastructure, distributed systems in
-              production <br />
-              <span className="text-accent glow-accent">environments.</span>
+              Senior Full-Stack
+              <span className="text-accent glow-accent"> Engineer</span>
             </h1>
 
             <p className="text-muted-foreground mb-12 max-w-2xl text-xl leading-relaxed md:text-2xl">
               7+ years of expertise in fintech, logistics, payroll, agri-tech
-              implementing high-concurrency full-stack architectures. I
-              translate complex business goals into high-performance technical
-              reality.
+              e.t.c building scalable systems, real-time platforms, and
+              operational tooling with Node.js, React, and cloud infrastructure.
             </p>
 
             <div className="flex flex-col gap-5 sm:flex-row">

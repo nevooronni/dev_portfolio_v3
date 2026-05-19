@@ -40,6 +40,7 @@ interface ProjectItem {
   live_link?: string;
   repo_link?: string;
   featured?: boolean;
+  show_case_study?: boolean;
   created_at: string;
 }
 
@@ -63,6 +64,7 @@ export default function AdminProjects() {
     live_link: "",
     repo_link: "",
     featured: false,
+    show_case_study: false,
   });
 
   const fetchProjects = async () => {
@@ -116,6 +118,7 @@ export default function AdminProjects() {
         live_link: "",
         repo_link: "",
         featured: false,
+        show_case_study: false,
       });
       fetchProjects();
     } catch (err) {
@@ -338,20 +341,40 @@ export default function AdminProjects() {
                       className="border-muted"
                     />
                   </div>
-                  <div className="flex items-center gap-2 pt-8">
-                    <Switch
-                      id="featured"
-                      checked={newProject.featured}
-                      onCheckedChange={(checked: boolean) =>
-                        setNewProject({ ...newProject, featured: checked })
-                      }
-                    />
-                    <Label
-                      htmlFor="featured"
-                      className="cursor-pointer text-xs font-bold tracking-widest uppercase"
-                    >
-                      Featured on Home
-                    </Label>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex items-center gap-2 pt-8">
+                      <Switch
+                        id="featured"
+                        checked={newProject.featured}
+                        onCheckedChange={(checked: boolean) =>
+                          setNewProject({ ...newProject, featured: checked })
+                        }
+                      />
+                      <Label
+                        htmlFor="featured"
+                        className="cursor-pointer text-xs font-bold tracking-widest uppercase"
+                      >
+                        Featured on Home
+                      </Label>
+                    </div>
+                    <div className="flex items-center gap-2 pt-8">
+                      <Switch
+                        id="show_case_study"
+                        checked={newProject.show_case_study}
+                        onCheckedChange={(checked: boolean) =>
+                          setNewProject({
+                            ...newProject,
+                            show_case_study: checked,
+                          })
+                        }
+                      />
+                      <Label
+                        htmlFor="show_case_study"
+                        className="cursor-pointer text-xs font-bold tracking-widest uppercase"
+                      >
+                        Show Case Study
+                      </Label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -407,6 +430,16 @@ export default function AdminProjects() {
                     </span>
                     <span className="text-muted-foreground text-[10px] tracking-wider uppercase">
                       • {project.subcategory}
+                    </span>
+                    <span
+                      className={`text-[10px] font-bold tracking-wider uppercase ${
+                        project.show_case_study === true
+                          ? "text-emerald-500"
+                          : "text-amber-500"
+                      }`}
+                    >
+                      • Case Study:{" "}
+                      {project.show_case_study === true ? "Visible" : "Hidden"}
                     </span>
                   </div>
                 </div>
@@ -584,22 +617,45 @@ export default function AdminProjects() {
                               className="border-muted"
                             />
                           </div>
-                          <div className="flex items-center gap-2 pt-8">
-                            <Switch
-                              id="edit-featured"
-                              checked={editingProject?.featured || false}
-                              onCheckedChange={(checked: boolean) =>
-                                setEditingProject((prev) =>
-                                  prev ? { ...prev, featured: checked } : null
-                                )
-                              }
-                            />
-                            <Label
-                              htmlFor="edit-featured"
-                              className="cursor-pointer text-xs font-bold tracking-widest uppercase"
-                            >
-                              Featured on Home
-                            </Label>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="flex items-center gap-2 pt-8">
+                              <Switch
+                                id="edit-featured"
+                                checked={editingProject?.featured || false}
+                                onCheckedChange={(checked: boolean) =>
+                                  setEditingProject((prev) =>
+                                    prev ? { ...prev, featured: checked } : null
+                                  )
+                                }
+                              />
+                              <Label
+                                htmlFor="edit-featured"
+                                className="cursor-pointer text-xs font-bold tracking-widest uppercase"
+                              >
+                                Featured on Home
+                              </Label>
+                            </div>
+                            <div className="flex items-center gap-2 pt-8">
+                              <Switch
+                                id="edit-show-case-study"
+                                checked={
+                                  editingProject?.show_case_study || false
+                                }
+                                onCheckedChange={(checked: boolean) =>
+                                  setEditingProject((prev) =>
+                                    prev
+                                      ? { ...prev, show_case_study: checked }
+                                      : null
+                                  )
+                                }
+                              />
+                              <Label
+                                htmlFor="edit-show-case-study"
+                                className="cursor-pointer text-xs font-bold tracking-widest uppercase"
+                              >
+                                Show Case Study
+                              </Label>
+                            </div>
                           </div>
                         </div>
                       </div>
