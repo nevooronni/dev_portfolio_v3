@@ -22,7 +22,7 @@ export function Hero() {
             </div>
 
             <h1 className="font-heading mb-8 text-3xl leading-[1.1] font-black md:text-3xl lg:text-4xl">
-              Senior Full-Stack
+              Senior Software
               <span className="text-accent glow-accent"> Engineer</span>
             </h1>
 
